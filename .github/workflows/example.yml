@@ -10,3 +10,4 @@ jobs:
         globs: '**/*.md'
         config: '.markdownlint.yaml'
         fix: true
+    - uses: huacnlee/autocorrect-action@v2
