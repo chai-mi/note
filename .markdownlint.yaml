@@ -1,0 +1,62 @@
+# 默认启用所有配置项
+default: true
+
+extends: null
+
+# MD001 标题级别每次只能增加一级
+heading-increment: false
+
+# MD003 标题格式选取最简洁的 ATX 标题样式
+heading-style:
+    style: "atx"
+
+# MD004 无序列表前缀统一使用 -
+ul-style:
+    style: "dash"
+
+# MD007 嵌套列表缩进 2 空格
+ul-indent:
+    indent: 2
+
+# MD013 限制每行字符数
+line-length: false
+
+# MD022 标题应被空白行包围
+blanks-around-headings: true
+
+# MD024 “兄弟”标题内容不可重复
+no-duplicate-heading:
+    siblings_only: true
+
+# MD025 同一文档中有多个顶级标题
+single-title: false
+
+# MD029 有序列表前缀编号依次递增
+ol-prefix:
+    style: "ordered"
+
+# MD032 列表应被空白行包围
+blanks-around-lists: false
+
+# MD033 允许使用 HTML 语法
+no-inline-html: false
+
+# MD035 水平分割线统一格式
+hr-style:
+    style: "---"
+
+# MD046 统一使用围栏式代码块
+code-block-style:
+    style: "fenced"
+
+# MD048 代码块围栏样式为 ``` 
+code-fence-style:
+    style: "backtick"
+
+# MD049 斜体样式为 _斜体_
+emphasis-style:
+    style: "underscore"
+
+# MD050 粗体样式为 **粗体**
+strong-style:
+    style: "asterisk"
