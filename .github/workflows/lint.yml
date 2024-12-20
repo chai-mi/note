@@ -1,0 +1,20 @@
+on: [pull_request]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: markdownlint
+      uses: DavidAnson/markdownlint-cli2-action@v18
+      with:
+        globs: '**/*.md'
+        config: '.markdownlint.yaml'
+        fix: true
+    - name: autocorrect
+      if: failure()
+      uses: huacnlee/autocorrect-action@v2
+      env:
+        REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        reviewdog: true
