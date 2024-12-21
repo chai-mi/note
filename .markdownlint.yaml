@@ -24,7 +24,7 @@ line-length: false
 # MD022 标题应被空白行包围
 blanks-around-headings: true
 
-# MD024 “兄弟”标题内容不可重复
+# MD024“兄弟”标题内容不可重复
 no-duplicate-heading:
     siblings_only: true
 
