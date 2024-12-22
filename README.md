@@ -39,4 +39,4 @@
 
 ## 贡献指南
 
-请提交 Pull Request
+参阅 [此处](./CONTRIBUTING.md)
