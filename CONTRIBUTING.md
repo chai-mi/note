@@ -26,7 +26,7 @@
 使用 `git clone` 将你 fork 的仓库克隆到本地
 
 ```bash
-git clone git@github.com:YourUsername/note.git
+git clone https://github.com/YourUsername/note.git
 ```
 
 ## 创建一个新的分支
@@ -89,7 +89,7 @@ git commit -m "Your meaningful commit message"
 定期将你 fork 的存储库与原始（上游）存储库同步，以随时了解最新更改
 
 ```bash
-git remote add upstream git@github.com:chai-mi/note.git
+git remote add upstream https://github.com/chai-mi/note.git
 git fetch upstream
 git rebase upstream/main
 ```
