@@ -6,3 +6,11 @@
 ## 贡献指南
 
 参阅 [此处](./CONTRIBUTING.md)
+
+## 贡献者
+
+[![贡献者](https://contrib.rocks/image?repo=chai-mi/note)](https://github.com/chai-mi/note/graphs/contributors)
+
+## 许可
+
+[MIT](./LICENSE)
