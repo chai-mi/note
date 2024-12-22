@@ -10,7 +10,9 @@
   - [clone 你的仓库](#clone-你的仓库)
   - [创建一个新的分支](#创建一个新的分支)
   - [进行编辑](#进行编辑)
-    - [建议](#建议)
+    - [排版格式](#排版格式)
+      - [例外](#例外)
+      - [额外的](#额外的)
   - [添加 commit](#添加-commit)
   - [与上游同步](#与上游同步)
   - [提交 Pull Request](#提交-pull-request)
@@ -38,9 +40,37 @@ git checkout -b your-branch-name
 ## 进行编辑
 
 > [!IMPORTANT]
-> 请遵循排版规范，以确保一致性
+> 请遵循以下规范，以确保一致性
 
-### 建议
+### 排版格式
+
+基本遵循 [中文文案排版指北](https://github.com/sparanoid/chinese-copywriting-guidelines/blob/master/README.zh-Hans.md)
+
+#### 例外
+
+- 不使用全角的（），而使用半角的 ()，并且前后空一格
+- 不使用「」，使用“”，并且前后空一格
+- 句末不加句号
+
+#### 额外的
+
+- 不使用行尾空两格的形式进行换行，而是额外一个空行
+
+  ```markdown
+  P1
+
+  P2
+  ```
+
+- 行内数学公式前后空一格
+  - `句子 $math$ 句子`
+- 行间数学公式使用以下形式
+
+  ```markdown
+  $$
+  math
+  $$
+  ```
 
 > [!TIP]
 > 如果你使用 VS Code 进行编辑，可以安装 [markdownlint](https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint) 和 [autocorrect](https://marketplace.visualstudio.com/items?itemName=huacnlee.autocorrect) 扩展来帮助你检查 Markdown 文件的格式
