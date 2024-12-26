@@ -53,9 +53,9 @@ code-block-style:
 code-fence-style:
     style: "backtick"
 
-# MD049 斜体样式为 _斜体_
+# MD049 斜体样式为 *斜体*
 emphasis-style:
-    style: "underscore"
+    style: "asterisk"
 
 # MD050 粗体样式为 **粗体**
 strong-style:
