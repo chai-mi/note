@@ -9,6 +9,9 @@
 - [x] 智能无人系统
 - [ ] 人工智能原理与应用
 
+> [!TIP]
+> 如果你想要贡献笔记或者修订错误，欢迎提交 Pull Request，具体做法参考 [贡献指南](./CONTRIBUTING.md)
+
 ## 贡献指南
 
 参阅 [此处](./CONTRIBUTING.md)
