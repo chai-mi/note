@@ -34,7 +34,7 @@ git clone https://github.com/YourUsername/note.git
 这有助于将你的工作与主仓库分开
 
 ```bash
-git checkout -b your-branch-name
+git checkout -b ${your-branch-name}
 ```
 
 ## 进行编辑
@@ -91,9 +91,21 @@ git commit -m "Your meaningful commit message"
 ```bash
 git remote add upstream https://github.com/chai-mi/note.git
 git fetch upstream
+git checkout main
 git rebase upstream/main
 ```
 
 ## 提交 Pull Request
+
+```bash
+# 与上游同步
+git fetch upstream
+git checkout main
+git rebase upstream/main
+git checkout ${your-branch-name}
+git rebase main
+# 推送到你的远端仓库
+git push
+```
 
 前往 [原始存储库](https://github.com/chai-mi/note/pulls) 并提交 Pull Request (PR)
