@@ -41,6 +41,8 @@ git checkout -b ${your-branch-name}
 
 > [!IMPORTANT]
 > 请遵循以下规范，以确保一致性
+>
+> 以最终 GitHub 的渲染呈现效果为准
 
 ### 排版格式
 
@@ -73,7 +75,11 @@ git checkout -b ${your-branch-name}
   ```
 
 > [!TIP]
-> 如果你使用 VS Code 进行编辑，可以安装 [markdownlint](https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint) 和 [autocorrect](https://marketplace.visualstudio.com/items?itemName=huacnlee.autocorrect) 扩展来帮助你检查 Markdown 文件的格式
+> 如果你使用 VS Code 进行编辑，可以安装以下扩展来帮助你检查 Markdown 文件的格式
+> - [Markdown All in One](https://marketplace.visualstudio.com/items?itemName=yzhang.markdown-all-in-one): 辅助编辑 markdown
+> - [Markdown Preview Mermaid Support](https://marketplace.visualstudio.com/items?itemName=bierner.markdown-mermaid): 提供 [markdown mermaid](https://docs.github.com/zh/get-started/writing-on-github/working-with-advanced-formatting/creating-diagrams#about-creating-diagrams) 拓展支持
+> - [markdownlint](https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint): markdown 格式约束
+> - [AutoCorrect](https://marketplace.visualstudio.com/items?itemName=huacnlee.autocorrect): 中英文混排辅助
 
 ## 添加 commit
 
