@@ -1,62 +1,62 @@
-# 默认启用所有配置项
 default: true
 
 extends: null
 
-# MD001 标题级别每次只能增加一级
-heading-increment: false
+# 标题级别每次能增加多级
+MD001: false
 
-# MD003 标题格式选取最简洁的 ATX 标题样式
-heading-style:
+# 标题格式选取最简洁的 ATX 标题样式
+MD003:
     style: "atx"
 
-# MD004 无序列表前缀统一使用 -
-ul-style:
+# 无序列表前缀统一使用 -
+MD004:
     style: "dash"
 
-# MD007 嵌套列表缩进 2 空格
-ul-indent:
+# 嵌套列表缩进 2 空格
+MD007:
     indent: 2
 
-# MD013 限制每行字符数
-line-length: false
+# 不限制每行字符数
+MD013: false
 
-# MD022 标题应被空白行包围
-blanks-around-headings: true
-
-# MD024“兄弟”标题内容不可重复
-no-duplicate-heading:
+# “兄弟”标题内容不可重复
+MD024:
     siblings_only: true
 
-# MD025 同一文档中有多个顶级标题
-single-title: false
+# 允许同一文档中有多个顶级标题
+MD025: false
 
-# MD029 有序列表前缀编号依次递增
-ol-prefix:
+# 有序列表前缀编号依次递增
+MD029:
     style: "ordered"
 
-# MD032 列表应被空白行包围
-blanks-around-lists: false
+# 列表无需被空白行包围
+MD032: false
 
-# MD033 允许使用 HTML 语法
-no-inline-html: false
+# 允许使用的 HTML 语法
+MD033:
+    allowed_elements:
+        - br
+        - details
+        - summary
 
-# MD035 水平分割线统一格式
-hr-style:
+# 水平分割线统一格式
+MD035:
     style: "---"
 
-# MD046 统一使用围栏式代码块
-code-block-style:
+# 统一使用围栏式代码块
+MD046:
     style: "fenced"
 
-# MD048 代码块围栏样式为 ``` 
-code-fence-style:
+# 代码块围栏样式为 ``` 
+MD048:
     style: "backtick"
 
-# MD049 斜体样式为 *斜体*
-emphasis-style:
+# 斜体样式为 *斜体*
+MD049:
     style: "asterisk"
 
-# MD050 粗体样式为 **粗体**
-strong-style:
+# 粗体样式为 **粗体**
+MD050:
     style: "asterisk"
