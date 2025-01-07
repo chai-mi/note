@@ -7,7 +7,7 @@
 
 ![we need you](https://edgestore.link/we-need-you.webp)
 
-如果你想要**贡献笔记**或者**修订错误**，欢迎提交 Pull Request，具体做法参考 [贡献指南](./CONTRIBUTING.md)
+如果你想要**贡献笔记**或者**修订错误**, 欢迎提交 Pull Request, 具体做法参考 [贡献指南](./CONTRIBUTING.md)
 
 ## 贡献者
 
