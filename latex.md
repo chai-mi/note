@@ -123,3 +123,27 @@ f(x) & = (m+n)^2 \\
      & = m^2+2mn+n^2 \\
 \end{aligned}
 $$
+
+## 希腊字母速查
+
+| \LaTeX        | $\LaTeX$      | \LaTeX      | $\LaTeX$    |
+| ------------- | ------------- | ----------- | ----------- |
+| `\alpha`      | $\alpha$      | `\nu`       | $\nu$       |
+| `\beta`       | $\beta$       | `\xi`       | $\xi$       |
+| `\gamma`      | $\gamma$      | `\omicron`  | $\omicron$  |
+| `\delta`      | $\delta$      | `\pi`       | $\pi$       |
+| `\epsilon`    | $\epsilon$    | `\varpi`    | $\varpi$    |
+| `\varepsilon` | $\varepsilon$ | `\rho`      | $\rho$      |
+| `\zeta`       | $\zeta$       | `\varrho`   | $\varrho$   |
+| `\eta`        | $\eta$        | `\sigma`    | $\sigma$    |
+| `\theta`      | $\theta$      | `\varsigma` | $\varsigma$ |
+| `\vartheta`   | $\vartheta$   | `\tau`      | $\tau$      |
+| `\iota`       | $\iota$       | `\upsilon`  | $\upsilon$  |
+| `\kappa`      | $\kappa$      | `\phi`      | $\phi$      |
+| `\lambda`     | $\lambda$     | `\varphi`   | $\varphi$   |
+| `\mu`         | $\mu$         | `\chi`      | $\chi$      |
+| `\Gamma`      | $\Gamma$      | `\Psi`      | $\Psi$      |
+| `\Delta`      | $\Delta$      | `\Omega`    | $\Omega$    |
+| `\Theta`      | $\Theta$      | `\Upsilon`  | $\Upsilon$  |
+| `\Lambda`     | $\Lambda$     | `\Phi`      | $\Phi$      |
+| `\Xi`         | $\Xi$         | `\Sigma`    | $\Sigma$    |
