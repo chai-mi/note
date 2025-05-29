@@ -13,7 +13,9 @@ jobs:
           globs: "**/*.md"
           config: ".markdownlint.yaml"
           fix: true
-      - name: autocorrect
+      - name: AutoCorrect
+        uses: huacnlee/autocorrect-action@v2
+      - name: Report ReviewDog
         if: failure()
         uses: huacnlee/autocorrect-action@v2
         env:
