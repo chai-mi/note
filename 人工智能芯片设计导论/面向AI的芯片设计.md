@@ -4,9 +4,6 @@
   - [AI 背景介绍](#ai-背景介绍)
   - [CNN 的 IP 方案介绍](#cnn-的-ip-方案介绍)
     - [GPU 类](#gpu-类)
-    - [DSP 类](#dsp-类)
-    - [ASIC 类](#asic-类)
-    - [ASIP 类](#asip-类)
   - [AI ASIP 处理器架构设计](#ai-asip-处理器架构设计)
     - [需求分析](#需求分析)
     - [软硬件切割](#软硬件切割)
@@ -20,7 +17,7 @@
     - [指令集模拟器开发 (ISS)](#指令集模拟器开发-iss)
     - [ISS 仿真 \& 架构优化迭代](#iss-仿真--架构优化迭代)
   - [AI ASIP 处理器实现难点](#ai-asip-处理器实现难点)
-    - [AI ASIP 处理器 RTL 开发过程中的注意事项](#ai-asip-处理器-rtl-开发过程中的注意事项)
+    - [AI ASIP 处理器 RTL (register-transfer level，寄存器传输级) 开发过程中的注意事项](#ai-asip-处理器-rtl-register-transfer-level寄存器传输级-开发过程中的注意事项)
     - [AI ASIP 处理器验证过程中的难点](#ai-asip-处理器验证过程中的难点)
     - [AI ASIP 处理器物理实现的难点](#ai-asip-处理器物理实现的难点)
   - [AI ASIP 处理器配套工具链](#ai-asip-处理器配套工具链)
@@ -66,72 +63,15 @@ GPU 特点
 - 更高的浮点运算能力
 - GPU 在深度学习领域，特别是训练方面非常适合
 
-NVIDIA
-
-- NVIDIA GPU 有完善的工具包，可用于所有主要的深度学习
-- NVIDIA GPU 通过 PCI-e 接口可以直接部署在服务器中，方便
-而快速
-
-框架：TensorFlow、Caffe 等
-
-### DSP 类
-
-Cadence VP6
-
-- 指令丰富，专门定制了一些针对深度学习的指令
-- 提供深度学习库
-- VLIW
-- SIMD
-- 256 MACS
-
-### ASIC 类
-
-NVDLA
-
-- CSB/Interrupt interface：主控通过 CSB 配置 NVLDA，NVDLA 完成任务后，返回中断
-- DBB interface：memory 总线接口，连接 DDR
-- second DBB interface : memory 总线接口，连接片上 SRAM
-- Convolution core : 负责 CONV 和 FC 操作
-- Activation engine (SDP) ：负责 RELU/BN/ELTWISE 等操作
-- Pooling engine (PDP) ：负责 POOLING 操作
-- Local resp. norm (CDP) ：负责 cross channel – LRNReshape
-- RUBIK/DMA：负责 SPLIT / CONCAT/RESHAPE等
-
-### ASIP 类
-
-寒武纪
-
-- 专门针对某种特定的应用和算法定制的处理器，自定义指令集
-- 具备 ASIC 的高效性和 DSP 的灵活性
-- Control Processor：给各个模块下发自定义指令
-- Nbin：存储 input feature map
-- SB：存储 kernel
-- Nbout：存储 output feature map
-- DMA：用于 Buffer 的数据搬运
-- NFU：用于 CNN 各个 layer 的计算
-
-云天励飞 NNP
-
-- 自定义指令
-  - 100+ 条自定义指令
-  - 50% 针对 AI 操作特殊定制
-- NU
-  - CNN 处理核心
-  - 多个基本处理单元 PE 组成
-  - 15 级流水
-- CU
-  - 指令广播、任务调度
-  - 8 级流水
-
 ## AI ASIP 处理器架构设计
 
 步骤（流程）
 
-- 算法需求分析
+- 需求分析
 - 软硬件切割
 - 架构定义
 - 指令集定义
-- 指令集模拟器开发 ( ISS)
+- 指令集模拟器开发 (ISS)
 - ISS 仿真 & 架构优化迭代
 - 确定微架构和指令集，进入开发阶段
 
@@ -177,8 +117,8 @@ AI ASIP 处理器架构设计重点分为以下 8 点
 - 数据重用
 - weight 重用
 - 计算并行度
-- DDR 带宽
-- MAC 利用率
+- DDR 带宽 (内存带宽)
+- MAC (Multiply Accumulate，乘数累加器) 利用率
 - 硬件拓展性
 - 初步流水时序
 - 后端可实现性
@@ -252,7 +192,7 @@ ISS 开发需要注意以下几点
 
 - 重要参数可灵活配置调整
   - 例如：Memory 大小、Buffer 的大小、MAC 个数、DDR 带宽
-- 丰富的 profiling 能力
+- 丰富的分析能力
   - 例如 MAC 的利用率、Buffer/Mac 是否饥饿
 - 基本能够反映出硬件真实性能
 
@@ -283,7 +223,7 @@ ISS 开发需要注意以下几点
 
 ## AI ASIP 处理器实现难点
 
-### AI ASIP 处理器 RTL 开发过程中的注意事项
+### AI ASIP 处理器 RTL (register-transfer level，寄存器传输级) 开发过程中的注意事项
 
 时序
 
@@ -311,7 +251,7 @@ ISS 开发需要注意以下几点
 - 非侵入式
   - 通过有效的 trace 机制，记录处理器正常运行期间发生的事件以及状态
 
-处理器的设计中要设计合理的 profile 机制
+处理器的设计中要设计合理的分析机制
 
 - 收集处理器运行过程中各种应用场景以及算法下的性能、带宽等信息，以便对软硬件进行优化
 
