@@ -239,9 +239,9 @@ ISS 开发需要注意以下几点
 
 与后端密切迭代
 
-- 面向 AI 的 ASIP 处理器，由于计算资源较多，走线复杂，通常会遇到 congestion 的问题
-- Memory size 以及 Memory 的块数也会影响后端 floorplan、走线、DFT 等
-- ASIP 处理器 RTL 开发初期甚至微架构设计时就要和后端建立良好的沟通机制，充分考虑后端实现
+- 由于计算资源较多，走线复杂，通常会遇到堵塞的问题
+- Memory size 以及 Memory 的块数也会影响后端 floorplan (布局规划)、走线、DFT ((Design For Testability - 可测试性设计)) 等
+- 开发初期甚至微架构设计时就要和后端建立良好的沟通机制，充分考虑后端实现
 
 处理器的设计要考虑有效的 debug 机制
 
@@ -274,8 +274,8 @@ CNN 计算中，layer 的层数多，每层计算级联多，定位问题困难
 
 - memory size 如果过大，可能导致 memory timing 有问题
 - memory 碎片化严重，导致 Floorplan、功耗、DFT 等各种问题
-- CNN 计算的特点就是计算比较密集，导致功耗和 IR DROP 问题
-- AI ASIP 处理器一般来说 MAC 数较多，这种情况下会导致连线异常复杂，导致 congestion 问题
+- CNN 计算的特点就是计算比较密集，导致功耗和 IR DROP (电压降) 问题
+- AI ASIP 处理器一般来说 MAC 数较多，这种情况下会导致连线异常复杂，导致堵塞问题
 
 解决方法
 
