@@ -5,7 +5,7 @@
 
 1. 脑机接口可以用于改善并治疗大脑功能，基于 EEG 的脑机接口治疗用途有 <span class="answer">减少癫痫发作频率</span>、<span class="answer">治疗注意力缺陷症并改进认知加工</span>、<span class="answer">改善运动功能的恢复</span>。
 2. 目前，正在使用两种运动辅助设备：<span class="answer">功能性电刺激</span>、<span class="answer">机器人</span>。
-3. BCI 应用于一般人群时，用户应用可能性很大程度上取决于 BCI 的<span class="answer">便利性</span>、<span class="answer">控制能力和一致性</span>方面的大幅改善。
+3. BCI 应用于一般人群时，用户应用可能性很大程度上取决于 BCI 的<span class="answer">便利性</span>、<span class="answer">控制能力</span>、<span class="answer">一致性</span>方面的大幅改善。
 4. 1978 年 Belmont 报告中（保护人类被试的国家委员会）阐述的三项原则：<span class="answer">行善</span>、<span class="answer">对人尊重</span>、<span class="answer">公正</span>，讨论对人的脑 - 机接口研究引发的伦理道德问题，该报告是现代人类研究标准的创始文件。
 5. BCIs 把中枢神经系统的活动转化为新的输出，新的输出可以<span class="answer">替代</span>、<span class="answer">恢复</span>、<span class="answer">增强</span>、<span class="answer">补充</span>、<span class="answer">改善</span>自然的中枢神经系统输出。
 6. EEG 电极分为<span class="answer">主动电极</span>和<span class="answer">被动电极</span>，其中<span class="answer">被动电极</span>直接与放大器连接，<span class="answer">主动电极</span>包含一个 1~10 倍的前置放大。
