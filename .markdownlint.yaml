@@ -40,6 +40,8 @@ MD033:
         - br
         - details
         - summary
+        - span
+        - style
 
 # 水平分割线统一格式
 MD035:
