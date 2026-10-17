@@ -1,3 +1,5 @@
+#import "@preview/note-me:0.6.0"
+
 #import "../template.typ": note
 #show: note.with()
 
@@ -26,6 +28,39 @@
   $
     Psi_c = mat(B, A B, A^2 B, ..., A^(n-1) B)
   $
+
+=== PBH 可控性秩判据
+
+PBH 是 Popov、Belevitch、Hautus 三人姓名的缩写。对于线性定常系统 $dot(x) = A x + B u$，设 $A in RR^(n times n)$、$B in RR^(n times m)$，系统完全可控的充要条件为
+
+$
+  "rank" mat(lambda I - A, B) = n,
+  quad forall lambda in CC
+$
+
+其中 $mat(lambda I - A, B)$ 表示将 $lambda I-A$ 与 $B$ *水平拼接*，所得矩阵为 $n times (n+m)$，要求其满行秩。
+
+若 $lambda$ 不是 $A$ 的特征值，则 $lambda I-A$ 已可逆，拼接矩阵必满行秩。因此，实际只需检查 $A$ 的*每一个不同特征值*；只要有一个特征值处秩小于 $n$，系统就不完全可控。
+
+#note-me.important[
+  当 $A$ 为对角矩阵或特征值容易求时，PBH 判据通常更方便，且不需要计算 $A$ 的高次幂。
+]
+
+==== 例
+
+$
+  A = mat(-7, 0, 0; 0, -5, 0; 0, 0, -1),
+  quad B = vec(2, 0, 9)
+$
+
+$A$ 的特征值为 $-7, -5, -1$。取 $lambda=-5$，有
+
+$
+  mat(lambda I-A, B)
+  = mat(2, 0, 0, 2; 0, 0, 0, 0; 0, 0, -4, 9)
+$
+
+第二行全为零，故其秩为 $2<3$，系统*不完全可控*，无需再检查其他特征值。对应状态满足 $dot(x)_2=-5x_2$，不受输入影响。
 
 === 输出可控性判别方法
 
@@ -96,11 +131,22 @@ $
 
 + 函数矩阵 $C upright(e)^(A t)$ 的 $n$ 个行在 $[0, infinity]$ 上线性无关
 
-+ 可控矩阵 $Psi_o$ 的秩为 $n$
++ 可观矩阵 $Psi_o$ 的秩为 $n$
 
   $
     Psi_o = mat(C^T, A^T C^T, (A^2)^T C^T, ..., (A^(n-1))^T C^T)^T
   $
+
+=== PBH 可观性秩判据
+
+对于线性定常系统 $dot(x)=A x+B u$、$y=C x$，设 $C in RR^(l times n)$，系统完全可观的充要条件为
+
+$
+  "rank" mat(lambda I-A; C) = n,
+  quad forall lambda in CC
+$
+
+其中 $mat(lambda I-A; C)$ 表示将 $lambda I-A$ 与 $C$ *竖直拼接*，所得矩阵为 $(n+l) times n$，要求其满列秩。与可控性相同，实际只需检查 $A$ 的每一个不同特征值。
 
 == 可控性和可观性的对偶关系
 
