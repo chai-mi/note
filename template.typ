@@ -54,20 +54,27 @@
   set text(
     lang: "zh",
     font: (
-      (name: "Noto Sans SC", covers: "latin-in-cjk"),
-      "Noto Sans SC",
+      (name: "Noto Sans CJK SC", covers: "latin-in-cjk"),
+      "Noto Sans CJK SC",
     ),
     15pt,
   )
   show math.equation: set text(font: (
     "New Computer Modern Math",
-    "Noto Sans SC",
+    "Noto Sans CJK SC",
   ))
   show raw: set text(font: "Noto Sans Mono")
 
   // 设置公式
   set math.vec(delim: "[")
   set math.mat(delim: "[")
+
+  show terms: it => block(
+    width: 100%,
+    fill: oklch(87%, 0.0182, 250.59deg),
+    inset: 12pt,
+    it,
+  )
 
   body
 }
