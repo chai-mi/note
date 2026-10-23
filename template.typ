@@ -69,5 +69,12 @@
   set math.vec(delim: "[")
   set math.mat(delim: "[")
 
+  show terms: it => block(
+    width: 100%,
+    fill: oklch(87%, 0.0182, 250.59deg),
+    inset: 12pt,
+    it,
+  )
+
   body
 }
