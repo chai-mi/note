@@ -374,14 +374,16 @@ $
   并对 $-integral_(t_0)^(t_f) lambda^T (t) dot(x)(t) dif t$ 项进行分部积分，得：
 
   $
-    J_1 = theta[x(t_f)] - lr(lambda^T (t) x(t) |)_(t_0)^(t_f) + integral_(t_0)^(t_f) [H(x, u, lambda, t) + dot(lambda)^T (t) x(t)] dif t
+    J_1 & = theta[x(t_f)] - lr(lambda^T (t) x(t) |)_(t_0)^(t_f) \
+        & + integral_(t_0)^(t_f) [H(x, u, lambda, t) + dot(lambda)^T (t) x(t)] dif t
   $
 
 + *计算一次变分并令 $delta J_1 = 0$*：
   在该问题中，*可变的量*为 $u(t), x(t), x(t_f)$；*不可变的量*为 $t_0, t_f, x(t_0)$ 以及待定的乘子函数 $lambda(t)$。对 $J_1$ 求一次变分：
 
   $
-    delta J_1 = [frac(partial theta, partial x(t_f)) - lambda(t_f)]^T delta x(t_f) + integral_(t_0)^(t_f) {[frac(partial H, partial x) + dot(lambda)]^T delta x + [frac(partial H, partial u)]^T delta u} dif t = 0
+    delta J_1 & = [frac(partial theta, partial x(t_f)) - lambda(t_f)]^T delta x(t_f) \
+    & + integral_(t_0)^(t_f) {[frac(partial H, partial x) + dot(lambda)]^T delta x + [frac(partial H, partial u)]^T delta u} dif t = 0
   $
 
   由于状态变分 $delta x(t)$ 与终端变分 $delta x(t_f)$ 由控制变分 $delta u(t)$ 引起、并非完全独立，可通过适当选取待定乘子 $lambda(t)$ 使 $delta x(t)$ 和 $delta x(t_f)$ 前的系数为零，再由 $delta u(t)$ 的任意性使 $delta u(t)$ 的系数为零，从而得到极值必要条件。（注：亦可令 $overline(H) = phi + lambda^T (f - dot(x))$，直接对宗量 $x$ 和 $u$ 列写欧拉方程得到完全相同的结果。）
@@ -477,7 +479,8 @@ $
 #figure(
   caption: [不同终端约束下最优控制的 $2n$ 个边界条件与附加条件汇总（初态 $x(t_0) = x_0$ 固定）],
   table(
-    columns: 4,
+    columns: (auto, auto, 190pt, 110pt),
+    inset: (x: 3pt, y: 10pt),
     [终端时刻 $t_f$], [终端状态 $x(t_f)$], [状态与协态边界条件（共 $2n$ 个）], [确定 $t_f$ 的附加横截条件],
 
     [固定], [固定 $x(t_f) = x_f$], [$x(t_0) = x_0, quad x(t_f) = x_f$], [无（$t_f$ 已知）],
