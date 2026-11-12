@@ -113,7 +113,9 @@ $
     [$J = phi[x(t_f), t_f] + integral_(t_0)^(t_f) L[x(t), u(t), t] dif t$],
     [兼顾终端状态精度与动态过程综合品质],
 
-    [终端型（梅耶 Mayer 型）], [$J = phi[x(t_f), t_f]$], [仅含*终端项*，保证在终端时刻 $t_f$ 系统状态尽量接近期望终态],
+    [终端型（梅耶 Mayer 型）],
+    [$J = phi[x(t_f), t_f]$],
+    [仅含*终端项*，保证在终端时刻 $t_f$ 系统状态尽量接近期望终态],
 
     [积分型（拉格朗日 Lagrange 型）],
     [$J = integral_(t_0)^(t_f) L[x(t), u(t), t] dif t$],
@@ -190,10 +192,10 @@ $
 
 $
   delta J & = lr(frac(partial, partial a) J[y(x) + a delta y(x)] |)_(a = 0) \
-          & = lr(frac(partial, partial a) integral_0^1 [y(x) + a delta y(x)]^2 dif x |)_(a = 0) \
-          & = integral_0^1 lr(frac(partial, partial a) [y(x) + a delta y(x)]^2 |)_(a = 0) dif x \
-          & = integral_0^1 lr(2[y(x) + a delta y(x)] delta y(x) |)_(a = 0) dif x \
-          & = 2 integral_0^1 y(x) delta y(x) dif x
+  & = lr(frac(partial, partial a) integral_0^1 [y(x) + a delta y(x)]^2 dif x |)_(a = 0) \
+  & = integral_0^1 lr(frac(partial, partial a) [y(x) + a delta y(x)]^2 |)_(a = 0) dif x \
+  & = integral_0^1 lr(2[y(x) + a delta y(x)] delta y(x) |)_(a = 0) dif x \
+  & = 2 integral_0^1 y(x) delta y(x) dif x
 $
 
 （直观规律：被积函数对宗量 $y(x)$ 求导后再乘以宗量的变分 $delta y(x)$。）
@@ -337,56 +339,106 @@ $
 #pagebreak()
 = 用变分法求解最优控制问题
 
-考虑非线性受控系统状态方程：
+考虑控制变量无约束（容许控制集为开集 $U = RR^m$）的受控系统与综合型（Bolza 型）性能指标：
 
 $
   dot(x)(t) = f[x(t), u(t), t], quad x(t_0) = x_0
 $ <受控系统>
 
-其中 $x(t) in RR^n$ 为状态向量，$u(t) in RR^m$ 为无约束控制向量（容许控制集为开集），$f$ 为 $n$ 维连续可微向量函数。性能指标泛函为综合型（Bolza 型）：
-
 $
   J = theta[x(t_f), t_f] + integral_(t_0)^(t_f) phi(x, u, t) dif t
 $ <综合性能指标>
 
-== 初始和末端时刻固定、末端状态自由的最优控制
+== 求解一般步骤
 
-=== 必要条件推导
-
-已知 $t_0, t_f$ 固定，初态 $x(t_0) = x_0$ 固定，末端状态 $x(t_f)$ 自由，性能指标为
-
-$
-  J = theta[x(t_f)] + integral_(t_0)^(t_f) phi(x, u, t) dif t
-$
-
-+ *引入拉格朗日乘子（协态向量 / 伴随向量）* $lambda(t) = mat(lambda_1(t), lambda_2(t), ..., lambda_n(t))^T$，将状态方程约束 $f(x, u, t) - dot(x)(t) = 0$ 并入性能指标，得到等价增广泛函：
-
-  $
-    J_1 = theta[x(t_f)] + integral_(t_0)^(t_f) {phi(x, u, t) + lambda^T (t) [f(x, u, t) - dot(x)(t)]} dif t
-  $
-
-+ *定义哈密顿（Hamilton）函数*：
++ *构造哈密顿（Hamilton）函数*：
 
   $
     H(x, u, lambda, t) := phi(x, u, t) + lambda^T (t) f(x, u, t)
   $ <哈密顿函数>
 
-  并对 $-integral_(t_0)^(t_f) lambda^T (t) dot(x)(t) dif t$ 项进行分部积分，得：
++ *列写控制方程与正则方程*：
+  - 由控制方程解出 $u^*(t)$ 关于 $x, lambda$ 的表达式：
+    $
+      frac(partial H, partial u) = 0 => u^*(t) = u(x, lambda, t)
+    $
+  - 列写伴随（协态）方程与状态方程：
+    $
+      dot(lambda)(t) = -frac(partial H, partial x), quad dot(x)(t) = frac(partial H, partial lambda) = f(x, u, t)
+    $
+
++ *代入边界条件与横截条件求解两点边值问题*：
+  将 $u(x, lambda, t)$ 代入正则方程，联立初态 $x(t_0) = x_0$ 与终端条件（如 $t_f$ 固定、$x(t_f)$ 自由时满足 $lambda(t_f) = frac(partial theta, partial x(t_f))$），解出最优轨线 $x^*(t)$ 与协态向量 $lambda^*(t)$。
+
++ *回代求最优控制律与最优性能指标*：
+  将 $x^*(t)$ 和 $lambda^*(t)$ 代入 $u(x, lambda, t)$ 得到最优控制 $u^*(t)$，进而计算最优性能指标 $J^*$。
+
+== 基础例题：终端时刻固定、终端状态自由
+
+已知系统状态方程为 $dot(x) = u$，初始条件 $x(t_0) = x_0$（$t_0, t_f$ 固定，$x(t_f)$ 自由），性能指标为
+
+$
+  J = 1 / 2 c x^2(t_f) + 1 / 2 integral_(t_0)^(t_f) u^2 dif t, quad (c > 0)
+$
+
+试求最优控制 $u^*(t)$、最优轨线 $x^*(t)$ 及最优性能指标 $J^*$。
+
+解：
+
++ *构造哈密顿函数*（其中 $theta = 1 / 2 c x^2(t_f), phi = 1 / 2 u^2, f = u$）：
 
   $
-    J_1 & = theta[x(t_f)] - lr(lambda^T (t) x(t) |)_(t_0)^(t_f) \
-        & + integral_(t_0)^(t_f) [H(x, u, lambda, t) + dot(lambda)^T (t) x(t)] dif t
+    H(x, u, lambda, t) = 1 / 2 u^2 + lambda u
   $
 
-+ *计算一次变分并令 $delta J_1 = 0$*：
-  在该问题中，*可变的量*为 $u(t), x(t), x(t_f)$；*不可变的量*为 $t_0, t_f, x(t_0)$ 以及待定的乘子函数 $lambda(t)$。对 $J_1$ 求一次变分：
++ *列写控制方程、伴随方程与横截条件*：
+  - 控制方程：
+    $
+      frac(partial H, partial u) = u + lambda = 0 => u^*(t) = -lambda(t)
+    $
+  - 伴随方程：
+    $
+      dot(lambda) = -frac(partial H, partial x) = 0 => lambda(t) = "const"
+    $
+  - 终端横截条件（$x(t_f)$ 自由）：
+    $
+      lambda(t_f) = frac(partial theta, partial x(t_f)) = frac(partial, partial x(t_f)) [1 / 2 c x^2(t_f)] = c x(t_f)
+    $
+  因 $lambda(t)$ 为常数，故对任意 $t in [t_0, t_f]$ 有 $lambda(t) = lambda(t_f) = c x(t_f)$，从而：
+  $
+    u^*(t) = -lambda(t) = -c x(t_f)
+  $
+
++ *代入状态方程求解两点边值问题*：
+  将 $dot(x) = u^* = -c x(t_f)$ 积分并代入初值 $x(t_0) = x_0$，得：
 
   $
-    delta J_1 & = [frac(partial theta, partial x(t_f)) - lambda(t_f)]^T delta x(t_f) \
-    & + integral_(t_0)^(t_f) {[frac(partial H, partial x) + dot(lambda)]^T delta x + [frac(partial H, partial u)]^T delta u} dif t = 0
+    x^*(t) = -c x(t_f) (t - t_0) + x_0
   $
 
-  由于状态变分 $delta x(t)$ 与终端变分 $delta x(t_f)$ 由控制变分 $delta u(t)$ 引起、并非完全独立，可通过适当选取待定乘子 $lambda(t)$ 使 $delta x(t)$ 和 $delta x(t_f)$ 前的系数为零，再由 $delta u(t)$ 的任意性使 $delta u(t)$ 的系数为零，从而得到极值必要条件。（注：亦可令 $overline(H) = phi + lambda^T (f - dot(x))$，直接对宗量 $x$ 和 $u$ 列写欧拉方程得到完全相同的结果。）
+  令 $t = t_f$，解出终端状态值：
+
+  $
+    x(t_f) = -c x(t_f)(t_f - t_0) + x_0 => x(t_f) = frac(x_0, 1 + c(t_f - t_0))
+  $
+
++ *回代得最优解*：
+  - *最优控制律*：
+    $
+      u^*(t) = -frac(c x_0, 1 + c(t_f - t_0))
+    $
+  - *最优状态轨线*：
+    $
+      x^*(t) = frac(c x_0 (t_f - t) + x_0, 1 + c(t_f - t_0))
+    $
+  - *最优性能指标*：
+    $
+      J^* = 1 / 2 c x^2(t_f) + 1 / 2 integral_(t_0)^(t_f) (u^*)^2 dif t = frac(c x_0^2, 2[1 + c(t_f - t_0)])
+    $
+
+== 极值定理与步骤原理
+
+=== 极值必要条件定理
 
 / 定理 4(终端时刻固定、终端状态自由的最优控制必要条件): 对于受控系统@受控系统 与性能指标 $J = theta[x(t_f)] + integral_(t_0)^(t_f) phi(x, u, t) dif t$，当初始和末端时刻 $t_0, t_f$ 固定、末端状态 $x(t_f)$ 自由时，为使 $u^*(t)$ 和 $x^*(t)$ 成为最优控制和最优轨线，必存在协态向量 $lambda(t)$ 满足：
 
@@ -411,83 +463,84 @@ $
     x(t_0) = x_0, quad lambda(t_f) = frac(partial theta, partial x(t_f))
   $ <固定终端时刻横截条件>
 
-（注：$delta J = 0$ 是泛函取极值的必要条件，是否为极小值还需由二次变分 $delta^2 J > 0$ 判断。）
+（注：$delta J = 0$ 为泛函取极值的必要条件，是否为极小值需由二次变分 $delta^2 J > 0$ 判断。）
+
+=== 解题步骤的原理推导
+
++ *引入拉格朗日乘子构造增广泛函*：
+  将状态方程约束 $f(x, u, t) - dot(x)(t) = 0$ 通过协态向量 $lambda(t) = mat(lambda_1(t), ..., lambda_n(t))^T$ 并入性能指标，代入 $H(x, u, lambda, t) = phi + lambda^T f$ 并对 $-integral_(t_0)^(t_f) lambda^T (t) dot(x)(t) dif t$ 分部积分：
+
+  $
+    J_1 & = theta[x(t_f)] + integral_(t_0)^(t_f) {phi(x, u, t) + lambda^T (t) [f(x, u, t) - dot(x)(t)]} dif t \
+    & = theta[x(t_f)] - lr(lambda^T (t) x(t) |)_(t_0)^(t_f) + integral_(t_0)^(t_f) [H(x, u, lambda, t) + dot(lambda)^T (t) x(t)] dif t
+  $
+
++ *令一次变分 $delta J_1 = 0$ 导出各步方程*：
+  固定量 $t_0, t_f, x(t_0)$ 变分为零，对可变量 $u(t), x(t), x(t_f)$ 求一次变分：
+
+  $
+    delta J_1 & = [frac(partial theta, partial x(t_f)) - lambda(t_f)]^T delta x(t_f) \
+    & + integral_(t_0)^(t_f) {[frac(partial H, partial x) + dot(lambda)]^T delta x + [frac(partial H, partial u)]^T delta u} dif t = 0
+  $
+
+  由于 $delta x(t), delta x(t_f)$ 由 $delta u(t)$ 引起而非独立，通过选取 $lambda(t)$ 令 $delta x(t)$ 和 $delta x(t_f)$ 的系数为零，即得*伴随方程* $dot(lambda) = -frac(partial H, partial x)$ 与*横截条件* $lambda(t_f) = frac(partial theta, partial x(t_f))$；再由无约束控制变分 $delta u(t)$ 的任意性，令其系数为零即得*控制方程* $frac(partial H, partial u) = 0$。
 
 === 哈密顿函数沿最优轨线的性质
 
-计算哈密顿函数 $H(x, u, lambda, t)$ 沿最优轨线对时间 $t$ 的全导数：
+沿最优轨线求 $H(x, u, lambda, t)$ 对时间 $t$ 的全导数，并代入 $frac(partial H, partial u) = 0, dot(x) = frac(partial H, partial lambda), dot(lambda) = -frac(partial H, partial x)$：
 
 $
-  frac(dif H, dif t) = (frac(partial H, partial x))^T dot(x) + (frac(partial H, partial u))^T dot(u) + (frac(partial H, partial lambda))^T dot(lambda) + frac(partial H, partial t)
+  frac(dif H, dif t) = (frac(partial H, partial x))^T dot(x) + (frac(partial H, partial u))^T dot(u) + (frac(partial H, partial lambda))^T dot(lambda) + frac(partial H, partial t) = frac(partial H, partial t)
 $
 
-沿最优轨线代入控制方程 $frac(partial H, partial u) = 0$ 以及正则方程 $dot(x) = frac(partial H, partial lambda), dot(lambda) = -frac(partial H, partial x)$，前两项正负相消：
-
-$
-  (frac(partial H, partial x))^T dot(x) + (frac(partial H, partial lambda))^T dot(lambda) = (frac(partial H, partial x))^T frac(partial H, partial lambda) - (frac(partial H, partial lambda))^T frac(partial H, partial x) = 0
-$
-
-故有：
-
-$
-  frac(dif H, dif t) = frac(partial H, partial t)
-$
-
-*结论*：哈密顿函数 $H$ 沿最优轨线对时间的全导数等于它对时间的偏导数。特别地，*当 $H$ 不显含时间 $t$（即 $frac(partial H, partial t) = 0$）时，沿最优轨线 $H$ 恒为常数*：
+当 $H$ 不显含时间 $t$（即 $frac(partial H, partial t) = 0$）时，沿最优轨线 $H$ 恒为常数：
 
 $
   H(x^*, u^*, lambda) = "const", quad t in [t_0, t_f]
 $
 
-=== 求解最优控制问题的一般步骤
+== 其他变式（不同终端条件）
 
-+ *第 1 步（构造哈密顿函数并求控制方程）*：
-  构造 $H(x, u, lambda, t) = phi(x, u, t) + lambda^T (t) f(x, u, t)$，由控制方程 $frac(partial H, partial u) = 0$ 解出 $u^*(t) = u(x^*, lambda^*)$。
-+ *第 2 步（求解两点边值问题）*：
-  将 $u^*(t) = u(x^*, lambda^*)$ 代入正则方程（状态方程与伴随方程），结合给定的初值条件 $x(t_0) = x_0$ 和终端横截条件求解出最优轨线 $x^*(t)$ 和协态向量 $lambda^*(t)$。
-+ *第 3 步（回代求最优控制律）*：
-  将求得的 $x^*(t)$ 和 $lambda^*(t)$ 代入 $u(x^*, lambda^*)$，得到最优控制 $u^*(t)$ 及最优性能指标 $J^*$。
+=== 末端时刻自由与不同终端状态约束
 
-== 初始时刻固定、末端时刻自由的最优控制
-
-已知初始时刻 $t_0$ 和初始状态 $x(t_0) = x_0$ 固定，*末端时刻 $t_f$ 自由*（末端状态 $x(t_f)$ 自由或固定），性能指标为：
-
-$
-  J = theta[x(t_f), t_f] + integral_(t_0)^(t_f) phi(x, u, t) dif t
-$
-
-此时除 $u(t), x(t), x(t_f)$ 外，*末端时刻 $t_f$ 也是一个可变的参量*。在求增广泛函 $J_1$ 的一次变分时，还需计入积分上限 $t_f$ 和终端项对 $t_f$ 的变分 $delta t_f$：
+当末端时刻 $t_f$ 也自由可变时，求增广泛函一次变分需计入 $delta t_f$ 项：
 
 $
   delta J_1 & = [frac(partial theta, partial x(t_f)) - lambda(t_f)]^T delta x(t_f) + integral_(t_0)^(t_f) [(frac(partial H, partial x) + dot(lambda))^T delta x + (frac(partial H, partial u))^T delta u] dif t \
   & quad + [frac(partial theta, partial t_f) + H(x(t_f), u(t_f), lambda(t_f), t_f)] delta t_f = 0
 $
 
-由 $delta t_f$ 的任意性，可得确定最优终端时刻 $t_f^*$ 的附加终端条件。
+由 $delta t_f$ 的任意性，导出确定最优终端时刻 $t_f^*$ 的附加横截条件。
 
-/ 定理 5(末端时刻自由的最优控制必要条件): 对于末端时刻 $t_f$ 自由、末端状态 $x(t_f)$ 自由的最优控制问题，最优控制 $u^*(t)$、最优轨线 $x^*(t)$ 与协态向量 $lambda(t)$ 必须满足：
-
-+ *正则方程*：$dot(x)(t) = frac(partial H, partial lambda) = f(x, u, t), quad dot(lambda)(t) = -frac(partial H, partial x)$
-+ *控制方程*：$frac(partial H, partial u) = 0$
-+ *边界条件*：$x(t_0) = x_0, quad lambda(t_f) = frac(partial theta, partial x(t_f))$（若末端状态 $x(t_f) = x_f$ 固定，则后一式替换为 $x(t_f) = x_f$）
-+ *终端时刻横截条件*（哈密顿函数在最优轨线末端满足的条件）：
-
-  $
-    H(t_f) = -frac(partial theta, partial t_f)
-  $ <终端时刻自由横截条件>
+/ 定理 5(末端时刻自由的最优控制必要条件): 当末端时刻 $t_f$ 自由时，除满足正则方程与控制方程外，在终端时刻 $t_f$ 还须满足*终端时刻横截条件*：
+$
+  H(t_f) = -frac(partial theta, partial t_f)
+$ <终端时刻自由横截条件>
 
 #figure(
   caption: [不同终端约束下最优控制的 $2n$ 个边界条件与附加条件汇总（初态 $x(t_0) = x_0$ 固定）],
   table(
     columns: (auto, auto, 190pt, 110pt),
     inset: (x: 3pt, y: 10pt),
-    [终端时刻 $t_f$], [终端状态 $x(t_f)$], [状态与协态边界条件（共 $2n$ 个）], [确定 $t_f$ 的附加横截条件],
+    [终端时刻 $t_f$],
+    [终端状态 $x(t_f)$],
+    [状态与协态边界条件（共 $2n$ 个）],
+    [确定 $t_f$ 的附加横截条件],
 
-    [固定], [固定 $x(t_f) = x_f$], [$x(t_0) = x_0, quad x(t_f) = x_f$], [无（$t_f$ 已知）],
+    [固定],
+    [固定 $x(t_f) = x_f$],
+    [$x(t_0) = x_0, quad x(t_f) = x_f$],
+    [无（$t_f$ 已知）],
 
-    [固定], [自由], [$x(t_0) = x_0, quad lambda(t_f) = frac(partial theta, partial x(t_f))$], [无（$t_f$ 已知）],
+    [固定],
+    [自由],
+    [$x(t_0) = x_0, quad lambda(t_f) = frac(partial theta, partial x(t_f))$],
+    [无（$t_f$ 已知）],
 
-    [自由], [固定 $x(t_f) = x_f$], [$x(t_0) = x_0, quad x(t_f) = x_f$], [$H(t_f) = -frac(partial theta, partial t_f)$],
+    [自由],
+    [固定 $x(t_f) = x_f$],
+    [$x(t_0) = x_0, quad x(t_f) = x_f$],
+    [$H(t_f) = -frac(partial theta, partial t_f)$],
 
     [自由],
     [自由],
@@ -496,73 +549,7 @@ $
   ),
 )
 
-#pagebreak()
-= 例题
-
-== 终端时刻固定、终端状态自由的最优控制
-
-已知系统状态方程为 $dot(x) = u$，初始条件 $x(t_0) = x_0$（$t_0, t_f$ 固定，$x(t_f)$ 自由），性能指标为
-
-$
-  J = 1 / 2 c x^2(t_f) + 1 / 2 integral_(t_0)^(t_f) u^2 dif t, quad (c > 0)
-$
-
-试求最优控制 $u^*(t)$、最优轨线 $x^*(t)$ 及最优性能指标 $J^*$。
-
-解：
-
-+ *构造哈密顿函数*（其中 $theta = 1 / 2 c x^2(t_f), phi = 1 / 2 u^2, f = u$）：
-
-  $
-    H(x, u, lambda, t) = 1 / 2 u^2 + lambda u
-  $
-
-+ *列写控制方程、伴随方程与横截条件*：
-  - 由控制方程：
-    $
-      frac(partial H, partial u) = u + lambda = 0 => u^*(t) = -lambda(t)
-    $
-  - 由伴随方程：
-    $
-      dot(lambda) = -frac(partial H, partial x) = 0 => lambda(t) = "const"
-    $
-  - 由终端横截条件：
-    $
-      lambda(t_f) = frac(partial theta, partial x(t_f)) = frac(partial, partial x(t_f)) [1 / 2 c x^2(t_f)] = c x(t_f)
-    $
-  因 $lambda(t)$ 为常数，故对任意 $t in [t_0, t_f]$ 有 $lambda(t) = lambda(t_f) = c x(t_f)$，从而：
-  $
-    u^*(t) = -lambda(t) = -c x(t_f)
-  $
-
-+ *代入状态方程求解最优轨线*：
-  将 $dot(x) = u^* = -c x(t_f)$ 积分并代入初值 $x(t_0) = x_0$，得：
-
-  $
-    x^*(t) = -c x(t_f) (t - t_0) + x_0
-  $
-
-  令 $t = t_f$，解出终端状态值：
-
-  $
-    x(t_f) = -c x(t_f)(t_f - t_0) + x_0 => x(t_f) = frac(x_0, 1 + c(t_f - t_0))
-  $
-
-+ *整理最优解*：
-  - *最优控制律*：
-    $
-      u^*(t) = -frac(c x_0, 1 + c(t_f - t_0))
-    $
-  - *最优状态轨线*：
-    $
-      x^*(t) = frac(c x_0 (t_f - t) + x_0, 1 + c(t_f - t_0))
-    $
-  - *最优性能指标*：
-    $
-      J^* = 1 / 2 c x^2(t_f) + 1 / 2 integral_(t_0)^(t_f) (u^*)^2 dif t = frac(c x_0^2, 2[1 + c(t_f - t_0)])
-    $
-
-== 初末状态固定、终端时刻自由的最优控制
+=== 变式例题 1：初末状态固定、终端时刻自由
 
 已知系统状态方程为 $dot(x) = u$，边界条件 $x(0) = 1, x(t_f) = 0$（终端时刻 $t_f$ 自由），性能指标为
 
@@ -610,15 +597,15 @@ $
     c_1 = root(3, 16) = 2^(4 / 3), quad u^*(t) = -2^(-2 / 3), quad x^*(t) = -2^(1 / 3) t + 1
   $
 
-== 室内温度的最优控制问题（终端状态固定、终端时刻自由）
+=== 变式例题 2：室内温度最优控制（终端状态固定、终端时刻自由）
 
-设室内温度为 $theta(t)$，外部恒定环境温度为 $theta_a = 15^circle.small$，加热速率为 $u(t)$。温度动力学方程为 $dot(theta)(t) = -a(theta(t) - theta_a) + b u(t)$。定义温差状态变量 $x(t) = theta(t) - theta_a$，则状态方程与边界条件为：
+设温差状态变量 $x(t) = theta(t) - theta_a$，状态方程与边界条件为：
 
 $
   dot(x)(t) = -a x(t) + b u(t), quad x(0) = 0^circle.small, quad x(t_f) = 10^circle.small
 $
 
-性能指标（兼顾升温时间与加热能耗，$t_f$ 自由）定义为：
+性能指标（$t_f$ 自由）为：
 
 $
   J = t_f + 1 / 2 integral_0^(t_f) u^2(t) dif t
@@ -635,7 +622,7 @@ $
 + *列写伴随方程与控制方程*：
   - 伴随方程：$dot(lambda) = -frac(partial H, partial x) = a lambda => lambda(t) = lambda(t_f) upright(e)^(-a(t_f - t))$
   - 控制方程：$frac(partial H, partial u) = u + b lambda = 0 => u(t) = -b lambda(t)$
-  （因初、末状态 $x(0)$ 和 $x(t_f)$ 全部给定，故状态无终端横截条件。）
+  （初、末状态 $x(0), x(t_f)$ 均固定，无协态终端横截条件。）
 
 + *利用终端时刻横截条件求 $lambda(t_f)$*：
   由 $H(t_f) = -frac(partial theta, partial t_f) = -1$ 并代入 $u(t_f) = -b lambda(t_f)$，得：
@@ -644,29 +631,23 @@ $
     1 / 2 u^2(t_f) + lambda(t_f) [-a x(t_f) + b u(t_f)] = -1 / 2 b^2 lambda^2(t_f) - a x(t_f) lambda(t_f) = -1
   $
 
-  即二次方程 $1 / 2 b^2 lambda^2(t_f) + a x(t_f) lambda(t_f) - 1 = 0$。代入参数 $x(t_f) = 10, b = 1$（取 $a = 0.035$）解得两个根：
+  即 $1 / 2 b^2 lambda^2(t_f) + a x(t_f) lambda(t_f) - 1 = 0$。代入参数 $x(t_f) = 10, b = 1, a = 0.035$ 解得：
 
   $
     lambda_1(t_f) approx 1.104, quad lambda_2(t_f) approx -1.811
   $
 
 + *求解状态方程并确定最优终端时刻 $t_f$*：
-  将 $u(t) = -b lambda(t) = -b lambda(t_f) upright(e)^(-a(t_f - t))$ 代入状态方程：
+  将 $u(t) = -b lambda(t_f) upright(e)^(-a(t_f - t))$ 代入状态方程：
 
   $
     dot(x)(t) = -a x(t) - b^2 lambda(t_f) upright(e)^(-a(t_f - t))
   $
 
-  对上式取拉氏变换（利用 $x(0) = 0$）：
+  利用 $x(0) = 0$ 取拉氏变换并反变换：
 
   $
-    X(s) = -frac(b^2 lambda(t_f) upright(e)^(-a t_f), (s + a)(s - a)) = -frac(b^2, a) lambda(t_f) upright(e)^(-a t_f) dot 1 / 2 (frac(1, s - a) - frac(1, s + a))
-  $
-
-  拉氏反变换得状态轨线：
-
-  $
-    x(t) = -frac(b^2, a) lambda(t_f) upright(e)^(-a t_f) (frac(upright(e)^(a t) - upright(e)^(-a t), 2)) = -frac(b^2, a) lambda(t_f) upright(e)^(-a t_f) sinh(a t)
+    X(s) = -frac(b^2 lambda(t_f) upright(e)^(-a t_f), (s + a)(s - a)) => x(t) = -frac(b^2, a) lambda(t_f) upright(e)^(-a t_f) sinh(a t)
   $
 
   代入终态条件 $x(t_f) = 10$，可得：
@@ -675,7 +656,7 @@ $
     lambda(t_f) = -frac(20 a, b^2 (1 - upright(e)^(-2 a t_f)))
   $
 
-  因 $t_f > 0$ 时必有 $lambda(t_f) < 0$，故舍去正根 $lambda_1(t_f) = 1.104$（对应 $t_(f 1) = -6.999 < 0$），取 $lambda_2(t_f) = -1.811$，解得 $t_f^* approx 6.999$。
+  因 $t_f > 0$ 时必有 $lambda(t_f) < 0$，舍去正根 $lambda_1(t_f) = 1.104$，取 $lambda_2(t_f) = -1.811$，解得 $t_f^* approx 6.999$。
 
 + *最优控制、最优轨线与最优协态*：
 
