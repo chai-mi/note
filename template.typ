@@ -45,9 +45,11 @@
 
   // 设置 table 的样式
   show figure.where(kind: table): set figure.caption(position: top)
+  show table: set text(size: 12pt)
   set table(
     stroke: table_stroke(1pt),
     align: horizon,
+    inset: (x: 5pt, y: 8pt),
   )
 
   // 设置字体
