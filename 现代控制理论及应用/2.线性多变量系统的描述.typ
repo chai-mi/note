@@ -1,8 +1,36 @@
 #import "@preview/fletcher:0.6.0" as fletcher: diagram, edge, node
 #import "@preview/note-me:0.6.0"
+#import "@preview/zap:0.6.0"
 
 #import "../template.typ": note
 #show: note.with()
+
+#let circuit-diagram(body) = context {
+  let bg = if page.fill == none { white } else { page.fill }
+  zap.circuit({
+    import zap: *
+    zap.cetz.draw.set-style(
+      zap: (
+        background: bg,
+        stroke: 1pt,
+        wire: (stroke: 0.9pt),
+        node: (radius: 0.065, stroke: 0.85pt, nofill: bg),
+        resistor: (width: 1.05, height: 0.42),
+        inductor: (variant: "ieee", width: 1.15, height: 0.36, bumps: 4),
+        capacitor: (width: 0.85, distance: 0.24),
+        vsource: (variant: "ieee", radius: 0.45),
+        decoration: (
+          stroke: 0.9pt,
+          scale: 1.15,
+          current: (
+            distance: 50%,
+          ),
+        ),
+      ),
+    )
+    body
+  })
+}
 
 = 线性系统的状态空间描述
 
@@ -10,9 +38,12 @@
 
 == 核心概念
 
-/ 状态: 表征系统运动状况（物理或非物理）并能确定未来行为的最小信息集合。
+/ 状态: 表征系统运动状况并能确定未来行为的最小信息集合。
+
 / 状态变量: 足以完全表征系统运动状态的*最少个数*的一组变量 $x_1(t), x_2(t), ..., x_n(t)$。给定初值 $x(t_0)$ 及 $t >= t_0$ 的输入 $u(t)$，即可唯一确定系统在 $t >= t_0$ 的全部动态行为。
+
 / 状态向量: 由状态变量构成的 $n$ 维列向量 $x(t) = mat(x_1(t), x_2(t), ..., x_n(t))^T$。
+
 / 状态空间与状态轨迹: 以状态变量为坐标轴构成的 $n$ 维线性空间称为*状态空间*；状态向量随时间在状态空间中描绘出的曲线称为*状态轨迹*。
 
 #note-me.note[
@@ -44,6 +75,47 @@ $
 $
 试建立该电路的状态空间表达式。
 
+#figure(
+  caption: [例 1 并联支路 RLC 电路图],
+  circuit-diagram({
+    import zap: *
+    import zap.cetz.draw: content
+
+    // 电压源 u(t)
+    vsource("u", (0, 0), (0, 3.4), label: $u(t)$)
+
+    // 上支路：电感电流 i_L(t) 与串联电感 L
+    inductor("l", (0, 3.4), (4.4, 3.4), position: 69%, label: $L$, i: (
+      content: $i_L (t)$,
+      anchor: "north-west",
+      distance: 42%,
+      invert: true,
+    ))
+
+    // 并联电容 C 与电容电压 u_c(t)
+    capacitor("c", (4.4, 3.4), (4.4, 0), n: "*-*", label: (
+      content: $C$,
+      anchor: "south",
+    ))
+    content((5.55, 2.75), $+$)
+    content((5.55, 1.7), $u_c (t)$)
+    content((5.55, 0.65), $-$)
+
+    // 并联电阻 R 与输出电流 i(t)
+    wire((4.4, 3.4), (7.8, 3.4))
+    resistor("r", (7.8, 3.4), (7.8, 0), label: $R$, i: (
+      content: $i(t)$,
+      anchor: "north-west",
+      distance: 45%,
+      label-distance: 0.58,
+      invert: true,
+    ))
+
+    // 底部公共回路
+    wire((0, 0), (7.8, 0))
+  }),
+)
+
 解：
 
 + *选取状态变量*：取两个独立储能元件对应的电感电流 $x_1 = i_L(t)$ 与电容电压 $x_2 = u_c(t)$。
@@ -65,6 +137,45 @@ $
 === 例 2（串联 RLC 网络）
 
 设有串联 $R$-$L$-$C$ 网络，输入电压 $u(t)$ 加在 $R, L, C$ 两端，输出为电容电压 $y(t) = u_c(t)$，回路电流为 $i(t)$。试求其传递函数与状态空间表达式。
+
+#figure(
+  caption: [例 2 串联 RLC 网络电路图],
+  circuit-diagram({
+    import zap: *
+    import zap.cetz.draw: content
+
+    // 左端输入端口 u(t)
+    node("in+", (0, 3.4), fill: false)
+    node("in-", (0, 0), fill: false)
+    content((0, 2.75), $+$)
+    content((0, 1.7), $u(t)$)
+    content((0, 0.65), $-$)
+
+    // 上支路：回路电流 i(t)、串联电阻 R、电感 L
+    resistor("r", (0, 3.4), (4.3, 3.4), position: 70%, label: $R$, i: (
+      content: $i(t)$,
+      anchor: "north-west",
+      distance: 42%,
+      invert: true,
+    ))
+    inductor("l", (4.3, 3.4), (6.9, 3.4), label: $L$)
+
+    // 并联输出电容 C
+    capacitor("c", (6.9, 3.4), (6.9, 0), n: "*-*", label: (
+      content: $C$,
+      anchor: "south",
+    ))
+
+    // 右端输出端口 u_c(t)
+    wire((6.9, 3.4), (8.7, 3.4))
+    wire((0, 0), (8.7, 0))
+    node("out+", (8.7, 3.4), fill: false)
+    node("out-", (8.7, 0), fill: false)
+    content((8.7, 2.75), $+$)
+    content((8.7, 1.7), $u_c (t)$)
+    content((8.7, 0.65), $-$)
+  }),
+)
 
 解：由回路方程与电容特性列写微分方程组：
 $
@@ -702,13 +813,19 @@ $
     [$b$ 向量], [$vec(0, dots.v, 0, 1)$], [$vec(beta_1, beta_2, dots.v, beta_n)$],
 
     [$c$ 向量],
-    [
-      - $m < n$: $mat(b_0, dots.c, b_m, underbrace(0 dots.c 0, n - m - 1))$
-      - $m = n$: $mat(b_0 - b_n a_0, dots.c, b_(n-1) - b_n a_(n-1))$
-    ],
+
+    $cases(
+      m < n: mat(b_0, dots.c, b_m, underbrace(0 dots.c 0, n - m - 1)),
+      m = n: mat(b_0 - b_n a_0, dots.c, b_(n-1) - b_n a_(n-1))
+    )$,
     [$mat(1, 0, dots.c, 0)$],
 
-    [$d$ 标量], [- $m < n$: $d = 0$ \ - $m = n$: $d = b_n$], [$d = beta_0 = b_n$（若 $m < n$ 则 $b_n = 0$）],
+    [$d$ 标量],
+    $cases(
+      m < n: d = 0,
+      m = n: d = b_n
+    )$,
+    [$d = beta_0 = b_n$（若 $m < n$ 则 $b_n = 0$）],
   ),
 )
 
