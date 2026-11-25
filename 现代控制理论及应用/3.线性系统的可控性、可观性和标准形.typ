@@ -17,6 +17,7 @@ Kalman 于 1960 年提出可控性与可观性，是现代控制理论的基石�
 考虑线性连续系统 $dot(x)(t) = A(t) x(t) + B(t) u(t)$（$x in RR^n, u in RR^m$）：
 
 / 状态可控性: 对状态空间中的初始状态 $x(t_0)$，若存在无约束的容许控制（幅值不受限、各分量平方可积）$u(t)$，能在有限时间 $t in [t_0, t_f]$ 内使其转移到零状态 $x(t_f) = 0$，则称 $x(t_0)$ 在 $t_0$ 时刻是*可控的*；若所有状态均可控，则称系统*状态完全可控*。
+
 / 状态可达性: 若存在无约束容许控制 $u(t)$，能在有限时间内将零初始状态 $x(t_0) = 0$ 转移到状态空间中任意指定终端状态 $x(t_1)$，则称系统*状态可达*。
 
 #note-me.note[
@@ -224,15 +225,9 @@ $
   table(
     columns: (auto, auto, auto, auto),
     [性质], [转移目标], [判别矩阵与满秩条件], [相互关系（连续定常）],
-    [状态可控性],
-    [任一 $x(t_0) -> 0$],
-    [$Psi_c = mat(B, A B, ..., A^(n - 1) B)$, 秩 $= n$],
-    [与状态可达性*等价*],
+    [状态可控性], [任一 $x(t_0) -> 0$], [$Psi_c = mat(B, A B, ..., A^(n - 1) B)$, 秩 $= n$], [与状态可达性*等价*],
 
-    [状态可达性],
-    [$0 ->$ 任一 $x(t_1)$],
-    [同 $Psi_c$, 秩 $= n$],
-    [与状态可控性*等价*],
+    [状态可达性], [$0 ->$ 任一 $x(t_1)$], [同 $Psi_c$, 秩 $= n$], [与状态可控性*等价*],
 
     [输出可控性],
     [任一 $y(t_0) ->$ 任一 $y(t_1)$],
@@ -410,9 +405,7 @@ $
     [$upright(e)^(-A t) B$ 的 $n$ 个行在 $[0, infinity)$ 线性无关],
     [$C upright(e)^(A t)$ 的 $n$ 个列在 $[0, infinity)$ 线性无关],
 
-    [Kalman 秩判据],
-    [$"rank" mat(B, A B, ..., A^(n - 1) B) = n$],
-    [$"rank" mat(C; C A; dots.v; C A^(n - 1)) = n$],
+    [Kalman 秩判据], [$"rank" mat(B, A B, ..., A^(n - 1) B) = n$], [$"rank" mat(C; C A; dots.v; C A^(n - 1)) = n$],
 
     [PBH 秩判据],
     [$"rank" mat(lambda_i I - A, B) = n, quad forall lambda_i in sigma(A)$],
@@ -605,42 +598,43 @@ $
   figure(
     caption: [SISO 线性定常系统四类可控/可观标准形汇总],
     table(
-      columns: (auto, 145pt, 125pt, 105pt),
+      columns: (90pt, 210pt, auto, 80pt, auto),
       [标准形类型\ （对偶关系）],
-      [变换阵 $x = T overline(x)$],
-      [系统阵 $overline(A) = T^(-1) A T$],
-      [$overline(b) = T^(-1) b$ 与 $overline(c) = c T$],
+      [变换阵\ $x = T overline(x)$],
+      [系统阵\ $overline(A) = T^(-1) A T$],
+      [$overline(b) = T^(-1) b$],
+      [$overline(c) = c T$],
 
-      [*可控标准 I 型*\ （对偶可观 II 型）],
+      [*可控标准 I 型*\ 对偶可观 II 型],
       [$
-        T_(c 1) = mat(A^(n - 1) b, ..., b) \
+        T_(c 1) = \
+        mat(A^(n - 1) b, ..., b)
         times mat(1, 0, ..., 0; alpha_(n - 1), 1, ..., 0; dots.v, dots.down, dots.down, dots.v; alpha_1, alpha_2, ..., 1)
       $],
       [$mat(0, 1, ..., 0; dots.v, dots.v, dots.down, dots.v; 0, 0, ..., 1; -alpha_0, -alpha_1, ..., -alpha_(n - 1))$],
-      [$overline(b) = mat(0, ..., 0, 1)^T$ \ $overline(c) = c T_(c 1) = mat(beta_0, ..., beta_(n - 1))$],
+      [$overline(b) = mat(0; ...; 0; 1)$],
+      [$overline(c) = c T_(c 1)$],
 
-      [*可控标准 II 型*\ （对偶可观 I 型）],
-      [$
-        T_(c 2) = Psi_c \
-        = mat(b, A b, ..., A^(n - 1) b)
-      $],
+      [*可控标准 II 型*\ 对偶可观 I 型],
+      [$T_(c 2) = Psi_c$],
       [$mat(0, ..., 0, -alpha_0; 1, ..., 0, -alpha_1; dots.v, dots.down, dots.v, dots.v; 0, ..., 1, -alpha_(n - 1))$],
-      [$overline(b) = mat(1, 0, ..., 0)^T$ \ $overline(c) = c T_(c 2) = mat(c b, ..., c A^(n - 1) b)$],
+      [$overline(b) = mat(1; 0; ...; 0)$ ],
+      [$overline(c) = c T_(c 2)$],
 
-      [*可观标准 I 型*\ （对偶可控 II 型）],
-      [$
-        T_(o 1)^(-1) = Psi_o = mat(c; c A; dots.v; c A^(n - 1))
-      $],
+      [*可观标准 I 型*\ 对偶可控 II 型],
+      [$T_(o 1)^(-1) = Psi_o$],
       [$mat(0, 1, ..., 0; dots.v, dots.v, dots.down, dots.v; 0, 0, ..., 1; -alpha_0, -alpha_1, ..., -alpha_(n - 1))$],
-      [$overline(b) = T_(o 1)^(-1) b$ \ $overline(c) = mat(1, 0, ..., 0)$],
+      [$overline(b) = T_(o 1)^(-1) b$  ],
+      [$overline(c) = mat(1, 0, ..., 0)$],
 
-      [*可观标准 II 型*\ （对偶可控 I 型）],
+      [*可观标准 II 型*\ 对偶可控 I 型],
       [$
-        T_(o 2)^(-1) = mat(1, alpha_(n - 1), ..., alpha_1; 0, 1, ..., alpha_2; dots.v, dots.v, dots.down, dots.v; 0, 0, ..., 1) \
+        T_(o 2)^(-1) = mat(1, alpha_(n - 1), ..., alpha_1; 0, 1, ..., alpha_2; dots.v, dots.v, dots.down, dots.v; 0, 0, ..., 1)
         times mat(c A^(n - 1); dots.v; c A; c)
       $],
       [$mat(0, ..., 0, -alpha_0; 1, ..., 0, -alpha_1; dots.v, dots.down, dots.v, dots.v; 0, ..., 1, -alpha_(n - 1))$],
-      [$overline(b) = T_(o 2)^(-1) b$ \ $overline(c) = mat(0, ..., 0, 1)$],
+      [$overline(b) = T_(o 2)^(-1) b$ \ ],
+      [$overline(c) = mat(0, ..., 0, 1)$],
     ),
   )
 }
@@ -714,13 +708,13 @@ $
 + *求特征多项式*：
   $
     det(s I - A) & = mat(s - 1, 0, -2; -2, s - 1, -1; -1, 0, s + 2, delim: "|") = s^3 - 5 s + 4 \
-    & ==> alpha_2 = 0, quad alpha_1 = -5, quad alpha_0 = 4
+                 & ==> alpha_2 = 0, quad alpha_1 = -5, quad alpha_0 = 4
   $
 + *计算变换阵 $T_(c 1)$ 与 $overline(c)$*：
   由 $b = vec(1, 2, 1), A b = vec(3, 5, -1), A^2 b = vec(1, 10, 5)$，得
   $
     T_(c 1) & = mat(A^2 b, A b, b) mat(1, 0, 0; alpha_2, 1, 0; alpha_1, alpha_2, 1) \
-    & = mat(1, 3, 1; 10, 5, 2; 5, -1, 1) mat(1, 0, 0; 0, 1, 0; -5, 0, 1) = mat(-4, 3, 1; 0, 5, 2; 0, -1, 1)
+            & = mat(1, 3, 1; 10, 5, 2; 5, -1, 1) mat(1, 0, 0; 0, 1, 0; -5, 0, 1) = mat(-4, 3, 1; 0, 5, 2; 0, -1, 1)
   $
   $overline(c) = c T_(c 1) = mat(0, 1, 1) mat(-4, 3, 1; 0, 5, 2; 0, -1, 1) = mat(0, 4, 3)$。
   于是可控标准 I 型为：
@@ -747,7 +741,7 @@ $
 + *求特征多项式*：
   $
     det(s I - A) & = mat(s - 1, -2, 0; -3, s + 1, -1; 0, -2, s, delim: "|") = s^3 - 9 s + 2 \
-    & ==> alpha_2 = 0, quad alpha_1 = -9, quad alpha_0 = 2
+                 & ==> alpha_2 = 0, quad alpha_1 = -9, quad alpha_0 = 2
   $
 + *求变换阵与标准形*：
   $
@@ -766,7 +760,7 @@ $
 
 - *可控标准 I 型推导*：记 $T_(c 1) = mat(e_1, e_2, ..., e_n)$。由列定义可得递推关系：
   $
-    e_n & = b, quad e_(n - 1) = A b + alpha_(n - 1) b = A e_n + alpha_(n - 1) e_n, \
+                 e_n & = b, quad e_(n - 1) = A b + alpha_(n - 1) b = A e_n + alpha_(n - 1) e_n, \
     dots.c, quad e_2 & = A e_3 + alpha_2 e_n
   $
   而对首列 $e_1 = A^(n - 1) b + alpha_(n - 1) A^(n - 2) b + ... + alpha_1 b$ 左乘 $A$，结合 Cayley-Hamilton 定理 $alpha(A) = A^n + alpha_(n - 1) A^(n - 1) + ... + alpha_0 I = 0$ 得：
